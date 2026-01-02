@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | LMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #1557b0;
+            --bg-body: #f8f9fc;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0,0,0,0.05);
+            --border-radius: 12px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+        }
+
+        .navbar {
+            background: var(--white);
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        /* Sidebar */
+        .layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            background: var(--white);
+            padding: 2rem 1.5rem;
+            border-right: 1px solid #edf2f7;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            border-radius: 8px;
+            transition: 0.3s;
+            margin-bottom: 8px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #eef5ff;
+            color: var(--primary);
+        }
+
+        /* Content Area */
+        .main-content {
+            padding: 2.5rem;
+            max-width: 1200px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid #f1f3f5;
+        }
+
+        .stat-card h4 { margin: 0; color: var(--text-muted); font-size: 0.9rem; }
+        .stat-card .value { font-size: 1.8rem; font-weight: 700; margin-top: 0.5rem; display: block; }
+
+        /* Course Cards */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            border: 1px solid #f1f3f5;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        .card-body { padding: 1.5rem; }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .btn:hover { background: var(--primary-dark); }
+
+        /* Status Badges */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-pending { background: #fff4e6; color: #d9480f; }
+        .badge-approved { background: #ebfbee; color: #2b8a3e; }
+
+        /* Messages */
+        .messages { list-style: none; padding: 0; margin-bottom: 2rem; }
+        .message { padding: 1rem; border-radius: 8px; margin-bottom: 10px; font-weight: 500; }
+        .message.success { background: #d3f9d8; color: #2b8a3e; border: 1px solid #b2f2bb; }
+        .message.error { background: #fff5f5; color: #c92a2a; border: 1px solid #ffc9c9; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div style="font-weight: 800; font-size: 1.5rem; color: var(--primary);">LMS.portal</div>
+    <div class="user-profile">
+        <div class="user-info" style="text-align: right;">
+            <div style="font-weight: 600; font-size: 0.9rem;">{{ user.username }}</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">ID: #2024{{ user.id }}</div>
+        </div>
+        <div class="avatar">{{ user.username|slice:":1"|upper }}</div>
+        <a href="{% url 'logout' %}" style="margin-left: 15px; font-size: 0.8rem; color: #e74c3c; font-weight: 600;">Logout</a>
+    </div>
+</nav>
+
+<div class="layout">
+    <aside class="sidebar">
+        <a href="{% url 'dashboard' %}" class="nav-link active"><span>📊</span> Dashboard</a>
+        <a href="#courses" class="nav-link"><span>📚</span> My Courses</a>
+        <a href="{% url 'add_note' %}" class="nav-link"><span>📝</span> Add Note</a>
+        <a href="{% url 'apply_leave' %}" class="nav-link"><span>📅</span> Leave Requests</a>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 1.5rem 0;">
+           <a href="{% url 'settings' %}" class="nav-link">
+         Settings
+    </a>
+
+    </aside>
+
+    <main class="main-content">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="message {{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <header style="margin-bottom: 2rem;">
+            <h1 style="margin: 0; font-size: 1.8rem;">Welcome back, {{ user.username }}! </h1>
+            <p style="color: var(--text-muted); margin-top: 5px;">Here is what's happening with your studies today.</p>
+        </header>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <h4>Enrolled Courses</h4>
+                <span class="value">{{ courses|length }}</span>
+            </div>
+            <div class="stat-card">
+                <h4>Study Notes</h4>
+                <span class="value">{{ notes|length }}</span>
+            </div>
+            <div class="stat-card">
+                <h4>Pending Leave</h4>
+                <span class="value">
+                    {% with pending=leaves|dictsort:"status" %}
+                        {{ leaves.count }}
+                    {% endwith %}
+                </span>
+            </div>
+        </section>
+
+        <div class="section-header">
+            <h3 id="courses">Active Courses</h3>
+            <a href="#" style="color: var(--primary); font-size: 0.9rem; font-weight: 600; text-decoration: none;">View All</a>
+        </div>
+
+        <div class="grid">
+            {% for course in courses %}
+            <div class="card">
+                <div class="card-body">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <h4 style="margin: 0 0 10px 0;">{{ course.title }}</h4>
+                        <span class="badge badge-approved">Active</span>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">
+                        {{ course.description|truncatechars:80 }}
+                    </p>
+                    <div style="margin-top: 20px; display: flex; align-items: center; justify-content: space-between;">
+                        <a href="#" class="btn">Continue Learning</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div style="grid-column: 1/-1; text-align: center; padding: 3rem; background: #fff; border-radius: 12px; border: 2px dashed #e2e8f0;">
+                <p style="color: var(--text-muted);">You aren't enrolled in any courses yet.</p>
+                <a href="#" class="btn">Browse Courses</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h3 style="margin-top: 3rem; margin-bottom: 1.5rem;">Recent Notes</h3>
+        <div class="card" style="padding: 0;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead style="background: #f8f9fa;">
+                    <tr>
+                        <th style="padding: 15px; font-size: 0.8rem; color: var(--text-muted);">TITLE</th>
+                        <th style="padding: 15px; font-size: 0.8rem; color: var(--text-muted);">COURSE</th>
+                        <th style="padding: 15px; font-size: 0.8rem; color: var(--text-muted);">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for note in notes|dictsortreversed:"id"|slice:":5" %}
+                    <tr style="border-top: 1px solid #eee;">
+                        <td style="padding: 15px; font-weight: 500;">{{ note.title }}</td>
+                        <td style="padding: 15px; font-size: 0.85rem;">{{ note.course.title }}</td>
+                        <td style="padding: 15px;">
+                            <a href="{% url 'edit_note' note.id %}" style="color: var(--primary); text-decoration: none; font-size: 0.85rem;">Edit</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" style="padding: 20px; text-align: center; color: var(--text-muted);">No notes created yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

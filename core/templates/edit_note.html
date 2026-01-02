@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Note</title>
+</head>
+<body>
+
+<h2>Edit Note</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <input type="text" name="title" value="{{ note.title }}" required><br><br>
+
+    <textarea name="content" rows="6" required>{{ note.content }}</textarea><br><br>
+
+    <button type="submit">Update</button>
+</form>
+
+<a href="{% url 'dashboard' %}">Back</a>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | LMS Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body style="
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f5f7fb 0%, #e4e9f2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+">
+
+    <div style="
+        background: #ffffff;
+        width: 100%;
+        max-width: 400px;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        box-sizing: border-box;
+    ">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <div style="
+                width: 60px;
+                height: 60px;
+                background: #1a73e8;
+                border-radius: 12px;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                font-size: 24px;
+                font-weight: 800;
+                margin-bottom: 15px;
+                box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+            ">L</div>
+            <h2 style="margin: 0; color: #2d3436; font-size: 22px; font-weight: 700;">Welcome Back</h2>
+            <p style="color: #636e72; font-size: 14px; margin-top: 5px;">Please enter your credentials to login</p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div style="
+                    background-color: #fff5f5;
+                    color: #c92a2a;
+                    padding: 12px;
+                    border-radius: 8px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    margin-bottom: 20px;
+                    border-left: 4px solid #c92a2a;
+                    box-sizing: border-box;
+                ">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" action="">
+            {% csrf_token %}
+
+            <div style="margin-bottom: 20px;">
+                <label for="email" style="display: block; font-size: 13px; font-weight: 600; color: #2d3436; margin-bottom: 8px;">
+                    EMAIL ADDRESS
+                </label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="name@company.com"
+                    required
+                    style="
+                        width: 100%;
+                        padding: 12px 15px;
+                        border: 2px solid #eef2f6;
+                        border-radius: 10px;
+                        font-size: 15px;
+                        font-family: inherit;
+                        box-sizing: border-box;
+                        outline: none;
+                        background-color: #fcfdfe;
+                        transition: all 0.2s;
+                    "
+                    onfocus="this.style.borderColor='#1a73e8'; this.style.backgroundColor='#fff';"
+                    onblur="this.style.borderColor='#eef2f6'; this.style.backgroundColor='#fcfdfe';"
+                >
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <label for="password" style="font-size: 13px; font-weight: 600; color: #2d3436;">
+                        PASSWORD
+                    </label>
+<a href="{% url 'password_reset' %}"
+   style="font-size:12px; color:#1a73e8; font-weight:600;">
+   Forgot password?
+</a>
+                </div>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="••••••••"
+                    required
+                    style="
+                        width: 100%;
+                        padding: 12px 15px;
+                        border: 2px solid #eef2f6;
+                        border-radius: 10px;
+                        font-size: 15px;
+                        font-family: inherit;
+                        box-sizing: border-box;
+                        outline: none;
+                        background-color: #fcfdfe;
+                        transition: all 0.2s;
+                    "
+                    onfocus="this.style.borderColor='#1a73e8'; this.style.backgroundColor='#fff';"
+                    onblur="this.style.borderColor='#eef2f6'; this.style.backgroundColor='#fcfdfe';"
+                >
+            </div>
+
+            <button
+                type="submit"
+                style="
+                    width: 100%;
+                    padding: 14px;
+                    background: #1a73e8;
+                    color: white;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.25);
+                    transition: all 0.3s;
+                "
+                onmouseover="this.style.backgroundColor='#1557b0'; this.style.transform='translateY(-1px)';"
+                onmouseout="this.style.backgroundColor='#1a73e8'; this.style.transform='translateY(0)';"
+            >
+                Login to Portal
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <p style="font-size: 14px; color: #636e72; margin: 0;">
+                Don't have an account? 
+                <a href="{% url 'register' %}" style="color: #1a73e8; text-decoration: none; font-weight: 600;">Sign up</a>
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>

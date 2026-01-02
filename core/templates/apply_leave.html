@@ -1,0 +1,44 @@
+<div style="max-width: 500px; margin: 40px auto; font-family: 'Segoe UI', Arial, sans-serif; background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); overflow: hidden;">
+    
+    <div style="background: #f8f9fa; padding: 20px 24px; border-bottom: 1px solid #e0e0e0;">
+        
+        <h2 style="margin: 0; font-size: 1.25rem; color: #1a1a1a; font-weight: 600;">Apply for Leave</h2>
+        <p style="margin: 4px 0 0; font-size: 0.85rem; color: #6c757d;">Please fill in the details for your time-off request.</p>
+    </div>
+
+    <form method="post" style="padding: 24px;">
+        {% csrf_token %}
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #495057; margin-bottom: 8px;">Reason for Leave</label>
+            <textarea name="reason" placeholder="e.g. Medical appointment, family vacation..." required 
+                style="width: 100%; min-height: 100px; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; font-size: 0.95rem; box-sizing: border-box; resize: vertical; outline: none; transition: border-color 0.2s;"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+            <div style="flex: 1;">
+                <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #495057; margin-bottom: 8px;">From Date</label>
+                <input type="date" name="from_date" required 
+                    style="width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 6px; font-size: 0.95rem; box-sizing: border-box; color: #495057;">
+            </div>
+            <div style="flex: 1;">
+                <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #495057; margin-bottom: 8px;">To Date</label>
+                <input type="date" name="to_date" required 
+                    style="width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 6px; font-size: 0.95rem; box-sizing: border-box; color: #495057;">
+            </div>
+        </div>
+
+        <button type="submit" 
+            style="width: 100%; background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 6px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s;">
+            Submit Application
+        </button>
+    </form>
+
+    <div style="padding: 0 24px 24px; text-align: center;">
+        <a href="{% url 'dashboard' %}" style="text-decoration: none; color: #6c757d; font-size: 0.875rem; font-weight: 500;">
+            ← Back to Dashboard
+        </a>
+         <a href="{% url 'home' %}" style="text-decoration: none; color: #202124; font-size: 0.9rem; font-weight: 500; padding: 8px 12px; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.background='#f0f2f5'" onmouseout="this.style.background='transparent'">🏠 Home</a>
+
+    </div>
+</div>
