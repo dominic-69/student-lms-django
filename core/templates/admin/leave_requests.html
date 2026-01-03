@@ -2,63 +2,103 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leave Requests | Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-slate-50 text-slate-900">
 
-<!-- HEADER -->
-<div class="bg-white border-b px-6 py-4 flex justify-between items-center">
-    <h1 class="text-xl font-bold">Leave Requests</h1>
-    <a href="{% url 'admin_dashboard' %}" class="text-blue-600 font-semibold hover:underline">
-        ← Back to Dashboard
+<nav class="bg-white border-b border-slate-200 px-8 py-5 flex justify-between items-center sticky top-0 z-10">
+    <div class="flex items-center gap-3">
+        <div class="bg-indigo-600 p-2 rounded-lg">
+            <i class="fas fa-calendar-check text-white text-sm"></i>
+        </div>
+        <h1 class="text-xl font-extrabold tracking-tight text-slate-800">Leave Management</h1>
+    </div>
+    <a href="{% url 'admin_dashboard' %}" class="flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-indigo-600 transition-colors">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
     </a>
-</div>
+</nav>
 
-<!-- CONTENT -->
-<div class="p-6 max-w-6xl mx-auto">
+<main class="p-8 max-w-7xl mx-auto">
+    
+    <div class="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Requests</p>
+            <p class="text-2xl font-black text-slate-800">{{ leaves.paginator.count }}</p>
+        </div>
+    </div>
 
-    <div class="bg-white rounded-xl border overflow-x-auto">
-        <table class="w-full text-sm">
-            <thead class="bg-gray-50 uppercase text-xs">
-                <tr>
-                    <th class="px-6 py-4">Student</th>
-                    <th class="px-6 py-4">Dates</th>
-                    <th class="px-6 py-4">Reason</th>
-                    <th class="px-6 py-4">Status</th>
-                    <th class="px-6 py-4 text-center">Action</th>
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-50/50 border-b border-slate-200">
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Student</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Duration</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Reason</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Status</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">Actions</th>
                 </tr>
             </thead>
-            <tbody class="divide-y">
+            <tbody class="divide-y divide-slate-100">
                 {% for leave in leaves %}
-                <tr>
-                    <td class="px-6 py-4 font-semibold">{{ leave.student.username }}</td>
-                    <td class="px-6 py-4">{{ leave.from_date }} → {{ leave.to_date }}</td>
-                    <td class="px-6 py-4">{{ leave.reason }}</td>
-                    <td class="px-6 py-4">
-                        <span class="px-2 py-1 rounded text-xs font-bold
-                        {% if leave.status == 'PENDING' %} bg-yellow-100 text-yellow-700
-                        {% elif leave.status == 'APPROVED' %} bg-green-100 text-green-700
-                        {% else %} bg-red-100 text-red-700 {% endif %}">
+                <tr class="hover:bg-slate-50/80 transition-all">
+                    <td class="px-6 py-5">
+                        <div class="flex items-center gap-3">
+                            <div class="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">
+                                {{ leave.student.username|first|upper }}
+                            </div>
+                            <span class="font-bold text-slate-700">{{ leave.student.username }}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-5">
+                        <div class="flex items-center gap-2 text-slate-600 font-medium">
+                            <i class="far fa-calendar text-slate-300"></i>
+                            {{ leave.from_date|date:"M d" }} <i class="fas fa-long-arrow-alt-right text-slate-300 mx-1"></i> {{ leave.to_date|date:"M d, Y" }}
+                        </div>
+                    </td>
+                    <td class="px-6 py-5 text-slate-500 italic max-w-xs truncate">
+                        "{{ leave.reason }}"
+                    </td>
+                    <td class="px-6 py-5">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-tighter
+                        {% if leave.status == 'PENDING' %} bg-amber-100 text-amber-700
+                        {% elif leave.status == 'APPROVED' %} bg-emerald-100 text-emerald-700
+                        {% else %} bg-rose-100 text-rose-700 {% endif %}">
+                            <span class="h-1.5 w-1.5 rounded-full mr-1.5 
+                            {% if leave.status == 'PENDING' %} bg-amber-500
+                            {% elif leave.status == 'APPROVED' %} bg-emerald-500
+                            {% else %} bg-rose-500 {% endif %}"></span>
                             {{ leave.status }}
                         </span>
                     </td>
-                    <td class="px-6 py-4 text-center">
+                    <td class="px-6 py-5 text-right">
                         {% if leave.status == 'PENDING' %}
+                        <div class="flex justify-end gap-3">
                             <a href="{% url 'update_leave_status' leave.id 'APPROVED' %}"
-                               class="text-green-600 font-bold">Approve</a>
-                            |
+                               class="bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-lg font-bold text-xs hover:bg-emerald-600 hover:text-white transition-all">
+                                Approve
+                            </a>
                             <a href="{% url 'update_leave_status' leave.id 'REJECTED' %}"
-                               class="text-red-600 font-bold">Reject</a>
+                               class="bg-rose-50 text-rose-600 px-3 py-1.5 rounded-lg font-bold text-xs hover:bg-rose-600 hover:text-white transition-all">
+                                Reject
+                            </a>
+                        </div>
                         {% else %}
-                            <span class="text-gray-400">Done</span>
+                        <span class="text-xs font-bold text-slate-300 uppercase italic">Processed</span>
                         {% endif %}
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" class="p-8 text-center text-gray-500">
-                        No leave requests found
+                    <td colspan="5" class="p-20 text-center">
+                        <i class="fas fa-inbox text-slate-200 text-5xl mb-4"></i>
+                        <p class="text-slate-400 font-medium">No leave requests found in the system</p>
                     </td>
                 </tr>
                 {% endfor %}
@@ -66,7 +106,31 @@
         </table>
     </div>
 
-</div>
+    <div style="margin-top: 40px; display: flex; align-items: center; justify-content: center; gap: 12px;">
+        
+        {% if leaves.has_previous %}
+            <a href="?page={{ leaves.previous_page_number }}"
+               style="padding: 10px 18px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; color: #475569; font-size: 13px; font-weight: 700; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: all 0.2s;"
+               onmouseover="this.style.borderColor='#4f46e5'; this.style.color='#4f46e5'"
+               onmouseout="this.style.borderColor='#e2e8f0'; this.style.color='#475569'">
+                <i class="fas fa-chevron-left" style="margin-right: 8px;"></i> Previous
+            </a>
+        {% endif %}
+
+        <div style="padding: 10px 20px; background: #f8fafc; border-radius: 12px; color: #64748b; font-size: 13px; font-weight: 600; border: 1px solid #f1f5f9;">
+            Page <span style="color: #1e293b; font-weight: 800;">{{ leaves.number }}</span> of {{ leaves.paginator.num_pages }}
+        </div>
+
+        {% if leaves.has_next %}
+            <a href="?page={{ leaves.next_page_number }}"
+               style="padding: 10px 18px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; color: #475569; font-size: 13px; font-weight: 700; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: all 0.2s;"
+               onmouseover="this.style.borderColor='#4f46e5'; this.style.color='#4f46e5'"
+               onmouseout="this.style.borderColor='#e2e8f0'; this.style.color='#475569'">
+                Next <i class="fas fa-chevron-right" style="margin-left: 8px;"></i>
+            </a>
+        {% endif %}
+    </div>
+</main>
 
 </body>
 </html>

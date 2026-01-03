@@ -28,7 +28,7 @@
 ">
 
     <!-- HEADER -->
-    <div style="text-align:center; margin-bottom:30px;">
+    <div style="text-align:center; margin-bottom:25px;">
         <div style="
             width:60px;
             height:60px;
@@ -56,78 +56,63 @@
         </p>
     </div>
 
-    <form method="post" style="display:flex; flex-direction:column; gap:18px;">
+    <!-- ✅ SHOW DJANGO MESSAGES -->
+    {% if messages %}
+        {% for message in messages %}
+            <div style="
+                background:#ffe5e5;
+                color:#b00020;
+                padding:12px;
+                border-radius:8px;
+                margin-bottom:15px;
+                font-size:0.9rem;
+                text-align:center;
+            ">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- ✅ FORM -->
+    <form method="post" action="{% url 'register' %}" style="display:flex; flex-direction:column; gap:18px;">
         {% csrf_token %}
 
-        <!-- namee -->
         <input
             type="text"
             name="username"
             placeholder="Username"
             required
-            style="
-                width:100%;
-                padding:14px 16px;
-                border:2px solid #edf2f7;
-                border-radius:10px;
-                font-size:1rem;
-                background:#f7fafc;
-                outline:none;
-            "
+            autocomplete="username"
+            style="width:100%; padding:14px 16px; border:2px solid #edf2f7; border-radius:10px; font-size:1rem; background:#f7fafc;"
         >
 
-        <!-- emaiL -->
         <input
             type="email"
             name="email"
             placeholder="Email address"
             required
-            style="
-                width:100%;
-                padding:14px 16px;
-                border:2px solid #edf2f7;
-                border-radius:10px;
-                font-size:1rem;
-                background:#f7fafc;
-                outline:none;
-            "
+            autocomplete="email"
+            style="width:100%; padding:14px 16px; border:2px solid #edf2f7; border-radius:10px; font-size:1rem; background:#f7fafc;"
         >
 
-        <!-- PAas -->
         <input
             type="password"
             name="password1"
             placeholder="Password"
             required
-            style="
-                width:100%;
-                padding:14px 16px;
-                border:2px solid #edf2f7;
-                border-radius:10px;
-                font-size:1rem;
-                background:#f7fafc;
-                outline:none;
-            "
+            autocomplete="new-password"
+            style="width:100%; padding:14px 16px; border:2px solid #edf2f7; border-radius:10px; font-size:1rem; background:#f7fafc;"
         >
 
-        <!-- pass -->
         <input
             type="password"
             name="password2"
             placeholder="Confirm Password"
             required
-            style="
-                width:100%;
-                padding:14px 16px;
-                border:2px solid #edf2f7;
-                border-radius:10px;
-                font-size:1rem;
-                background:#f7fafc;
-                outline:none;
-            "
+            autocomplete="new-password"
+            style="width:100%; padding:14px 16px; border:2px solid #edf2f7; border-radius:10px; font-size:1rem; background:#f7fafc;"
         >
 
-        <!-- butttonn -->
         <button
             type="submit"
             style="
@@ -147,7 +132,7 @@
         </button>
     </form>
 
-    <div style="margin-top:30px; text-align:center; border-top:1px solid #f1f5f9; padding-top:20px;">
+    <div style="margin-top:25px; text-align:center; border-top:1px solid #f1f5f9; padding-top:20px;">
         <p style="margin:0; font-size:0.95rem; color:#718096;">
             Already have an account?
             <a href="{% url 'login' %}" style="color:#667eea; font-weight:700; text-decoration:none;">

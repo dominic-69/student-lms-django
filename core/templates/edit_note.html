@@ -1,23 +1,55 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Note</title>
-</head>
-<body>
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #f0f2f5; background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%); font-family: 'Inter', system-ui, -apple-system, sans-serif;">
+    
+    <div style="width: 100%; max-width: 550px; margin: 20px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); padding: 40px; box-sizing: border-box;">
+        
+        <div style="text-align: center; margin-bottom: 35px;">
+            <div style="display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: #6366f1; color: white; border-radius: 14px; margin-bottom: 15px; box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);">
+                <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+            </div>
+            <h2 style="margin: 0; font-size: 26px; font-weight: 800; color: #1e293b; letter-spacing: -0.025em;">Refine Note</h2>
+            <p style="margin: 8px 0 0; color: #64748b; font-size: 15px;">Update your thoughts and findings</p>
+        </div>
 
-<h2>Edit Note</h2>
+        <form method="post">
+            {% csrf_token %}
 
-<form method="post">
-    {% csrf_token %}
+            <div style="margin-bottom: 24px;">
+                <input type="text" name="title" value="{{ note.title }}" required placeholder="Note Title" 
+                    style="width: 100%; background: rgba(255, 255, 255, 0.5); border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 18px; font-size: 16px; font-weight: 600; color: #1e293b; outline: none; transition: all 0.2s; box-sizing: border-box;"
+                    onfocus="this.style.borderColor='#6366f1'; this.style.background='#fff'; this.style.boxShadow='0 0 0 4px rgba(99, 102, 241, 0.1)';"
+                    onblur="this.style.borderColor='#e2e8f0'; this.style.background='rgba(255, 255, 255, 0.5)'; this.style.boxShadow='none';">
+            </div>
 
-    <input type="text" name="title" value="{{ note.title }}" required><br><br>
+            <div style="margin-bottom: 30px;">
+                <textarea name="content" rows="7" required placeholder="Describe your note..."
+                    style="width: 100%; background: rgba(255, 255, 255, 0.5); border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 18px; font-size: 16px; line-height: 1.6; color: #334155; outline: none; transition: all 0.2s; box-sizing: border-box; resize: vertical;"
+                    onfocus="this.style.borderColor='#6366f1'; this.style.background='#fff'; this.style.boxShadow='0 0 0 4px rgba(99, 102, 241, 0.1)';"
+                    onblur="this.style.borderColor='#e2e8f0'; this.style.background='rgba(255, 255, 255, 0.5)'; this.style.boxShadow='none';">{{ note.content }}</textarea>
+            </div>
 
-    <textarea name="content" rows="6" required>{{ note.content }}</textarea><br><br>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button type="submit" 
+                    style="flex: 2; background: #1e293b; color: white; border: none; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s;"
+                    onmouseover="this.style.background='#0f172a'; this.style.transform='translateY(-2px)';"
+                    onmouseout="this.style.background='#1e293b'; this.style.transform='translateY(0)';"
+                    onmousedown="this.style.transform='translateY(0)';">
+                    Confirm Updates
+                </button>
+                
+                <a href="{% url 'dashboard' %}" 
+                    style="flex: 1; text-align: center; background: transparent; color: #64748b; border: 1px solid #cbd5e1; border-radius: 14px; padding: 15px; font-size: 16px; font-weight: 600; text-decoration: none; transition: all 0.2s;"
+                    onmouseover="this.style.background='#f1f5f9'; this.style.color='#1e293b';"
+                    onmouseout="this.style.background='transparent'; this.style.color='#64748b';">
+                    Discard
+                </a>
+            </div>
+        </form>
 
-    <button type="submit">Update</button>
-</form>
+        <div style="margin-top: 30px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px; text-align: center;">
+            <p style="font-size: 13px; color: #94a3b8;">
+                Last modified: <span style="font-weight: 600; color: #64748b;">{{ note.updated_at|date:"M d, Y" }}</span>
+            </p>
+        </div>
 
-<a href="{% url 'dashboard' %}">Back</a>
-
-</body>
-</html>
+    </div>
+</div>

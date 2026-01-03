@@ -1,10 +1,35 @@
-<h2>Delete Note</h2>
+<div style="max-width: 450px; margin: 60px auto; font-family: 'Inter', -apple-system, sans-serif;">
+    <div style="background: #ffffff; padding: 40px; border-radius: 16px; border: 1px solid #fee2e2; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); text-align: center;">
+        
+        <div style="width: 60px; height: 60px; background: #fef2f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+            <svg style="width: 30px; height: 30px; color: #dc2626;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+        </div>
 
-<p>Are you sure you want to delete "<strong>{{ note.title }}</strong>"?</p>
+        <h2 style="margin: 0 0 12px 0; color: #991b1b; font-size: 22px; font-weight: 700;">Delete Note?</h2>
+        
+        <p style="margin: 0 0 30px 0; color: #4b5563; font-size: 15px; line-height: 1.6;">
+            Are you sure you want to delete <strong style="color: #111827;">"{{ note.title }}"</strong>? 
+            <br><span style="font-size: 13px; color: #6b7280;">This action cannot be undone.</span>
+        </p>
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Yes, Delete</button>
-</form>
+        <form method="post" style="margin-bottom: 15px;">
+            {% csrf_token %}
+            <button type="submit" 
+                style="width: 100%; background-color: #dc2626; color: white; padding: 14px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.2);"
+                onmouseover="this.style.backgroundColor='#b91c1c'; this.style.transform='translateY(-1px)'" 
+                onmouseout="this.style.backgroundColor='#dc2626'; this.style.transform='translateY(0)'">
+                Yes, Delete Permanently
+            </button>
+        </form>
 
-<a href="{% url 'dashboard' %}">Cancel</a>
+        <a href="{% url 'dashboard' %}" 
+           style="display: inline-block; width: 100%; padding: 12px; color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 10px; transition: background 0.2s;"
+           onmouseover="this.style.background='#f3f4f6'" 
+           onmouseout="this.style.background='transparent'">
+            Cancel, keep it
+        </a>
+        
+    </div>
+</div>

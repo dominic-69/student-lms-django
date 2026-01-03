@@ -52,8 +52,16 @@ urlpatterns = [
     path('add-note/', views.add_note, name='add_note'),
     path('edit-note/<int:note_id>/', views.edit_note, name='edit_note'),
     path('delete-note/<int:note_id>/', views.delete_note, name='delete_note'),
+    path('note/<int:note_id>/', views.view_note, name='view_note'),
 
     path('apply-leave/', views.apply_leave, name='apply_leave'),
+    #blokk
+    path(
+    'admin/user-toggle/<int:user_id>/',
+    views.toggle_user_status,
+    name='toggle_user_status'
+),
+
 
     #adminnn
     
@@ -66,4 +74,10 @@ urlpatterns = [
         views.update_leave_status,
         name='update_leave_status'
     ),
+    path(
+    'admin/student/<int:user_id>/',
+    views.admin_student_detail,
+    name='admin_student_detail'
+),
+
 ]

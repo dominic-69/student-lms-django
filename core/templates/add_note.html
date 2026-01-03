@@ -1,16 +1,39 @@
-<form method="post">
-    {% csrf_token %}
+<div style="max-width: 500px; margin: 40px auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    <form method="post" style="background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e1e4e8; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
+        
+        <h2 style="margin-top: 0; margin-bottom: 20px; color: #1a1f36; font-size: 24px; font-weight: 700;">Create New Note</h2>
+        
+        {% csrf_token %}
 
-    <select name="course" required>
-        <option value="">Select Course</option>
-        {% for course in courses %}
-            <option value="{{ course.id }}">{{ course.title }}</option>
-        {% endfor %}
-    </select>
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #4f566b;">Course</label>
+            <select name="course" required 
+                style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; color: #1f2937; background-color: #f9fafb; transition: border-color 0.2s; outline: none;">
+                <option value="" disabled selected>Select a course...</option>
+                {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <input type="text" name="title" placeholder="Note title" required>
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #4f566b;">Title</label>
+            <input type="text" name="title" placeholder="e.g. Midterm Revision" required 
+                style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; box-sizing: border-box; outline: none;">
+        </div>
 
-    <textarea name="content" placeholder="Write your note..." required></textarea>
+        <div style="margin-bottom: 25px;">
+            <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #4f566b;">Your Note</label>
+            <textarea name="content" placeholder="Start typing your thoughts here..." required 
+                style="width: 100%; height: 150px; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; line-height: 1.5; box-sizing: border-box; outline: none; resize: vertical;"></textarea>
+        </div>
 
-    <button type="submit">Save Note</button>
-</form>
+        <button type="submit" 
+            style="width: 100%; background-color: #4f46e5; color: white; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);"
+            onmouseover="this.style.backgroundColor='#4338ca'" 
+            onmouseout="this.style.backgroundColor='#4f46e5'">
+            Save Note
+        </button>
+        
+    </form>
+</div>  

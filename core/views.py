@@ -3,8 +3,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.core.exceptions import ObjectDoesNotExist
+
+
 
 from .models import Course, Enrollment, Note, LeaveRequest, Profile
+
+
+
 
 
 #decoratrr
@@ -29,6 +36,20 @@ def home(request):
     return render(request, 'home.html', {
         'recent_notes': recent_notes
     })
+    
+#to saw the note
+
+@login_required
+def view_note(request, note_id):
+    note = get_object_or_404(
+        Note,
+        id=note_id,
+        student=request.user  #ownn note see  
+    )
+
+    return render(request, 'view_note.html', {
+        'note': note
+    })
 
 
 #log inn with main id and passsssssss
@@ -41,6 +62,10 @@ def login_view(request):
             user_obj = User.objects.get(email=email)
         except User.DoesNotExist:
             messages.error(request, "Invalid email or password")
+            return redirect('login')
+
+        if not user_obj.is_active:
+            messages.error(request, "Your account is blocked. Contact admin.")
             return redirect('login')
 
         user = authenticate(
@@ -57,6 +82,29 @@ def login_view(request):
         return redirect('login')
 
     return render(request, 'login.html')
+#blockk
+# use tryy catchh for [get_object_or_404]
+
+def toggle_user_status(request, user_id):
+    try:
+        user = User.objects.get(id=user_id, is_staff=False)
+
+        user.is_active = not user.is_active
+        user.save()
+
+        if user.is_active:
+            messages.success(request, f"{user.username} has been unblocked")
+        else:
+            messages.success(request, f"{user.username} has been blocked")
+
+    except ObjectDoesNotExist:
+        messages.error(request, "User not found or cannot be modified")
+
+    except Exception as e:
+        messages.error(request, "Something went wrong. Please try again.")
+
+    return redirect('admin_dashboard')
+
 
 
 #loggg outtttttttt
@@ -96,6 +144,26 @@ def register(request):
 
     return render(request, 'register.html')
 
+#stdent details to saw admin
+@admin_required
+def admin_student_detail(request, user_id):
+    student = get_object_or_404(User, id=user_id, is_staff=False)
+
+    profile = Profile.objects.filter(user=student).first()
+    courses = Course.objects.filter(enrollment__student=student)
+    notes = Note.objects.filter(student=student)
+    leaves = LeaveRequest.objects.filter(student=student)
+
+    return render(request, 'admin/student_detail.html', {
+        'student': student,
+        'profile': profile,
+        'courses': courses,
+        'notes': notes,
+        'leaves': leaves,
+    })
+
+
+
 
 # dashboard stdnt
 @login_required
@@ -122,6 +190,29 @@ def dashboard(request):
         'leaves': leaves,
     })
 
+@login_required
+def home(request):
+    if request.user.is_staff:
+        return redirect('admin_dashboard')
+
+    courses = Course.objects.filter(enrollment__student=request.user)
+    available_courses = Course.objects.exclude(enrollment__student=request.user)
+
+    notes = (
+        Note.objects
+        .filter(student=request.user)
+        .select_related('course')
+        .order_by('-created_at')
+    )
+
+    leaves = LeaveRequest.objects.filter(student=request.user)
+
+    return render(request, 'home.html', {
+        'courses': courses,
+        'available_courses': available_courses,
+        'notes': notes,
+        'leaves': leaves,
+    })
 
 # student detaila(settings)
 @login_required
@@ -140,7 +231,7 @@ def settings_view(request):
         profile.save()
 
         messages.success(request, "Profile updated successfully")
-        return redirect('settings')
+        return redirect('home') 
 
     return render(request, 'settings.html', {'profile': profile})
 
@@ -248,15 +339,20 @@ def apply_leave(request):
 # leeave req
 @admin_required
 def admin_leave_requests(request):
-    leaves = (
+    leaves_qs = (
         LeaveRequest.objects
         .select_related('student')
         .order_by('-applied_at')
     )
 
+    paginator = Paginator(leaves_qs, 5) 
+    page_number = request.GET.get('page')
+    leaves = paginator.get_page(page_number)
+
     return render(request, 'admin/leave_requests.html', {
         'leaves': leaves
     })
+
 
 
 
@@ -274,6 +370,4 @@ def update_leave_status(request, leave_id, status):
 
     return redirect('admin_leave_requests')
 
-# paginator = Paginator(leaves_qs, 10)  
-#     page_number = request.GET.get('page')
-#     leaves = paginator.get_page(page_number)
+
