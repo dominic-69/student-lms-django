@@ -5,12 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
-
-
-
 from .models import Course, Enrollment, Note, LeaveRequest, Profile
-
-
 
 
 
@@ -133,7 +128,7 @@ def register(request):
         user = User.objects.create_user(
             username=username,
             email=email,
-            password=p1
+            password=p1  #passhash
         )
 
         Profile.objects.create(user=user)
@@ -344,7 +339,7 @@ def admin_leave_requests(request):
         .select_related('student')
         .order_by('-applied_at')
     )
-
+    #pagination logicc
     paginator = Paginator(leaves_qs, 5) 
     page_number = request.GET.get('page')
     leaves = paginator.get_page(page_number)
@@ -352,10 +347,6 @@ def admin_leave_requests(request):
     return render(request, 'admin/leave_requests.html', {
         'leaves': leaves
     })
-
-
-
-
 # apprve or rejecfttt
 
 @admin_required

@@ -1,39 +1,66 @@
-<div style="max-width: 500px; margin: 40px auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-    <form method="post" style="background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e1e4e8; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
-        
-        <h2 style="margin-top: 0; margin-bottom: 20px; color: #1a1f36; font-size: 24px; font-weight: 700;">Create New Note</h2>
-        
-        {% csrf_token %}
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; font-family: 'Inter', -apple-system, sans-serif; padding: 20px; 
+    background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), 
+    url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=1600&auto=format&fit=crop'); 
+    background-size: cover; background-position: center; background-attachment: fixed; box-sizing: border-box;">
 
-        <div style="margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #4f566b;">Course</label>
-            <select name="course" required 
-                style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; color: #1f2937; background-color: #f9fafb; transition: border-color 0.2s; outline: none;">
-                <option value="" disabled selected>Select a course...</option>
-                {% for course in courses %}
-                    <option value="{{ course.id }}">{{ course.title }}</option>
-                {% endfor %}
-            </select>
+    <div style="width: 100%; max-width: 480px; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 35px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.4); box-sizing: border-box;">
+        
+        <div style="text-align: center; margin-bottom: 25px;">
+            <div style="width: 50px; height: 50px; background: #eef2ff; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.15);">
+                <svg style="width: 24px; height: 24px; color: #4f46e5;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+            </div>
+            <h2 style="margin: 0; color: #1e293b; font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">New Study Note</h2>
+            <p style="color: #64748b; font-size: 14px; margin-top: 4px; font-weight: 500;">Fill in the details for your notes</p>
         </div>
 
-        <div style="margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #4f566b;">Title</label>
-            <input type="text" name="title" placeholder="e.g. Midterm Revision" required 
-                style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; box-sizing: border-box; outline: none;">
-        </div>
+        <form method="post">
+            {% csrf_token %}
 
-        <div style="margin-bottom: 25px;">
-            <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #4f566b;">Your Note</label>
-            <textarea name="content" placeholder="Start typing your thoughts here..." required 
-                style="width: 100%; height: 150px; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; line-height: 1.5; box-sizing: border-box; outline: none; resize: vertical;"></textarea>
-        </div>
+            <div style="margin-bottom: 18px;">
+                <label style="display: block; margin-bottom: 6px; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Select Course</label>
+                <select name="course" required 
+                    style="width: 100%; padding: 11px 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #1e293b; background-color: #fff; outline: none; cursor: pointer; box-sizing: border-box;">
+                    <option value="" disabled selected>Choose Subject...</option>
+                    {% for course in courses %}
+                        <option value="{{ course.id }}">{{ course.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <button type="submit" 
-            style="width: 100%; background-color: #4f46e5; color: white; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);"
-            onmouseover="this.style.backgroundColor='#4338ca'" 
-            onmouseout="this.style.backgroundColor='#4f46e5'">
-            Save Note
-        </button>
-        
-    </form>
-</div>  
+            <div style="margin-bottom: 18px;">
+                <label style="display: block; margin-bottom: 6px; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Note Title</label>
+                <input type="text" name="title" placeholder="e.g. Chapter 1 Summary" required 
+                    style="width: 100%; padding: 11px 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #1e293b; outline: none; transition: all 0.2s; box-sizing: border-box;"
+                    onfocus="this.style.borderColor='#4f46e5'; this.style.boxShadow='0 0 0 3px rgba(79, 70, 229, 0.1)';"
+                    onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none';">
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 6px; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Notes Content</label>
+                <textarea name="content" placeholder="Write something inspiring..." required 
+                    style="width: 100%; height: 130px; padding: 11px 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; line-height: 1.5; color: #334155; outline: none; transition: all 0.2s; box-sizing: border-box; resize: vertical;"
+                    onfocus="this.style.borderColor='#4f46e5'; this.style.boxShadow='0 0 0 3px rgba(79, 70, 229, 0.1)';"
+                    onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none';"></textarea>
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+                <button type="submit" 
+                    style="flex: 2; background-color: #4f46e5; color: white; padding: 12px; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.25);"
+                    onmouseover="this.style.background='#4338ca'; this.style.transform='translateY(-1px)';"
+                    onmouseout="this.style.background='#4f46e5'; this.style.transform='translateY(0)';"
+                >
+                    Create Note
+                </button>
+                <a href="{% url 'dashboard' %}" 
+                    style="flex: 1; text-align: center; background: #f8fafc; color: #64748b; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none; transition: all 0.2s; box-sizing: border-box;"
+                    onmouseover="this.style.background='#f1f5f9'; this.style.color='#1e293b';"
+                    onmouseout="this.style.background='#f8fafc'; this.style.color='#64748b';"
+                >
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

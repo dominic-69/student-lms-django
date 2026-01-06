@@ -42,9 +42,7 @@ class ViewNoteTestCase(TestCase):
         )
 
     def test_view_note_success(self):
-        """
-        Test that logged-in user can view his own note
-        """
+       
 
         url = reverse('view_note', args=[self.note.id])
         response = self.client.get(url)
@@ -54,9 +52,7 @@ class ViewNoteTestCase(TestCase):
         self.assertContains(response, 'This is my science note')
 
     def test_view_note_other_user_forbidden(self):
-        """
-        Test that another user CANNOT view this note
-        """
+        
 
         other_user = User.objects.create_user(
             username='otheruser',

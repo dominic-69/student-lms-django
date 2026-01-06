@@ -68,6 +68,7 @@ urlpatterns = [
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('admin/add-course/', views.add_course, name='add_course'),
     path('admin/leaves/', views.admin_leave_requests, name='admin_leave_requests'),
+    
 
     path(
         'leave/<int:leave_id>/<str:status>/',
